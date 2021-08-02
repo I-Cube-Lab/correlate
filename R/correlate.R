@@ -498,7 +498,7 @@ plot_corr <- function(x,
   )
 }
 
-#' Format P value as charcter string
+#' Format P value as character string
 #' @noRd
 .pvalue <- function(x,
                     round = 2) {
