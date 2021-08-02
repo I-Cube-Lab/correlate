@@ -1,9 +1,74 @@
 ## VISUALISE CORRELATION MATRICES ----------------------------------------------
 
-#' @param x this your data
+#' Create a correlation matrix
+#'
+#' @param x a matrix or data.frame containing the data to plot.
+#' @param corr type of correlation to perform, set to \code{"spearman"} by
+#'   default but can be changed to \code{"pearson"}.
+#' @param corr_round number of decimal places to round p values and
+#'   correlations, set to 2 decimal places by default.
+#' @param corr_col_scale colour scale to use for the heatmap component of the
+#'   correlation plot, set to \code{c("red", "green")} by default.
+#' @param order column names in the order that they should appear in the plot.
+#' @param upper type of plots to include in the upper portion of the panel, set
+#'   to \code{"scatter"} by default. This can be changed to \code{"heatmap"} to
+#'   flip the plot around the other way.
+#' @param labels vector of labels in an order matching the column names of
+#'   \code{x} to replace the feature labels on the histogram panels.
+#' @param label_text_size size of text in diagonal panels, set to 2 by default.
+#' @param label_text_font font for text on diagonal panels, set to 1 by default.
+#' @param label_text_col colour for text on diagonal panels, set to
+#'   \code{"black"} by default.
+#' @param corr_text_size text size for p values and correlation text in heatmap
+#'   panels, set to 2 by default.
+#' @param corr_text_font font for p values and correlation text in heatmap
+#'   panels, set to 1 by default.
+#' @param corr_text_col colour for p values and correlation text in heatmap
+#'   panels, set to \code{"black"} by default.
+#' @param point_size numeric to control the size of points in scatterplots, set
+#'   to 1 by default.
+#' @param point_col colour to use for points in scatterplots, set to
+#'   \code{"black"} by default.
+#' @param point_type type of point to plot in scatterplots, set to 16 default.
+#' @param title a title for the correlation plot, set to \code{"Correlation
+#'   Matrix"} by default.
+#' @param title_text_size numeric to control the size of the title text, set to
+#'   1 by default.
+#' @param title_text_font font to use for title text, set to 1 by default.
+#' @param title_text_col colour to use for title text, set to \code{"black"} by
+#'   default.
+#' @param hist_col colour to use for histograms in diagonal panels, set to
+#'   \code{"blue"} by default.
+#' @param hist_border_col colour to use for histogram borders in diagonal
+#'   panels, set to \code{"black"} by default.
+#' @param hist_border_width width of histogram borders in diagonal panels, set
+#'   to 1 by default.
+#' @param hist_border_type type of border to use use for histograms in diagonal
+#'   panels, set to 1 by default.
+#' @param density_line_col colour to use for density distributions in diagonal
+#'   panels, set to \code{"black"} by default.
+#' @param density_line_type type of line to use for density distributions in
+#'   diagonal panels, set to 1 by default.
+#' @param density_line_width width of lines for density distributions in
+#'   diagonal panels, set to 1 by default.
+#' @param trend_line_type type of line to use for trendlines, set to 1 by
+#'   default.
+#' @param trend_line_col colour to use for trendlines, set to \code{"red"} by
+#'   default.
+#' @param trend_line_width width of trendlines, set to 1 by default.
+#' @param margins vector of length 4 to control margins around each plot, set to
+#'   \code{c(0.5, 0.5, 0.5, 0.5)} by default.
+#' @param frame controls the amount of padding around the outside of the panel,
+#'   set to 2 by default.
+#' @param alpha cutoff point for p value significance, set to \code{0.05} by
+#'   default.
+#'
+#' @return recorded plot
+#'
 #' @importFrom graphics par
 #' @importFrom grDevices recordPlot
 #' @importFrom Hmisc rcorr
+#'
 #' @export
 plot_corr <- function(x,
                       corr = "spearman",
@@ -113,8 +178,6 @@ plot_corr <- function(x,
     assign(names(args)[z], 
            args[[z]], envir = parent.frame(n = 2))
   })
-  
-  print(label_text_size)
   
   # CORRELATION MATRIX ---------------------------------------------------------
   
@@ -230,7 +293,9 @@ plot_corr <- function(x,
           }
           # LOESS REGRESSION
           if(corr == "spearman") {
-            mod <- loess(x[, z] ~ x[, y])
+            mod <- suppressWarnings(
+              loess(x[, z] ~ x[, y])
+            )
             lines(
               x[order(x[, y]), y],
               mod$fitted[order(x[, y])],
@@ -333,7 +398,9 @@ plot_corr <- function(x,
           }
           # LOESS REGRESSION
           if(corr == "spearman") {
-            mod <- loess(x[, z] ~ x[, y])
+            mod <- suppressWarnings(
+              loess(x[, z] ~ x[, y])
+            )
             lines(
               x[order(x[, y]), y],
               mod$fitted[order(x[, y])],
@@ -426,7 +493,9 @@ plot_corr <- function(x,
   }
   
   # RETURN DATA
-  recordPlot()
+  return(
+    recordPlot()
+  )
 }
 
 #' Format P value as charcter string
