@@ -202,7 +202,8 @@ plot_corr <- function(x,
   
   # CREATE LAYOUT
   par(mfrow = rep(length(vars), 2),
-      oma = oma)
+      oma = oma,
+      par(mar = rep(margins, 4)))
   
   # X PARAMETER
   for(z in vars_ind) {
@@ -215,7 +216,7 @@ plot_corr <- function(x,
       # DIAGONAL PANELS
       if(z == y) {
         # OUTER MARGINS
-        par(mar = rep(margins, 4))
+        
         # HISTOGRAM
         h <- hist(
           x[, z],
@@ -498,21 +499,4 @@ plot_corr <- function(x,
   )
 }
 
-#' Format P value as character string
-#' @noRd
-.pvalue <- function(x,
-                    round = 2) {
-  
-  for(i in seq_along(x)) {
-    if(x[i] < 0.0001) {
-      x[1] <- "<0.001"
-    } else if(x[i] < 0.001) {
-      x[i] <- "<0.001"
-    } else if(x[i] < 0.01) {
-      x[i] <- "<0.01"
-    } else {
-      x[i] <- as.character(round(x[i], round))
-    }
-  }
-  return(x)
-}
+

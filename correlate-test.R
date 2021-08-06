@@ -17,10 +17,7 @@ png("test.png",
     height = 20,
     units = "in",
     res = 300)
-plot_corr(rdata,
-          point_size = 2,
-          point_type = 16,
-          label_text_size = 1.2)
+plot_corr_new(rdata)
 dev.off()
 
 pdf("test.pdf",
