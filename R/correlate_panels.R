@@ -266,3 +266,8 @@
   }
   
 }
+
+#' @noRd
+.panel_dend <- function() {
+  
+}
